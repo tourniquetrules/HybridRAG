@@ -1,6 +1,6 @@
 # HybridRAG - Emergency Medicine Knowledge System
 
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.10](https://img.shields.io/badge/python-3.10.x-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
 [![ChromaDB](https://img.shields.io/badge/ChromaDB-Latest-purple.svg)](https://www.trychroma.com/)
@@ -21,8 +21,10 @@ A sophisticated **Hybrid Retrieval-Augmented Generation (RAG)** system specifica
 - **Medical Entity Extraction**: Automatic identification of symptoms, conditions, medications, procedures, and anatomy
 - **Structured Knowledge**: Relationship extraction between medical concepts
 
-### 🧠 **Local LLM Integration**
-- **LM Studio Support**: Connect to your local LM Studio instance at `http://192.168.2.64:1234`
+### 🧠 **Medical AI & NLP**
+- **spaCy SciBERT**: Advanced medical entity extraction (requires Python 3.10.x)
+- **S-PubMedBert Embeddings**: Medical literature optimized embeddings
+- **LM Studio Support**: Connect to your local LM Studio instance
 - **Medical-Focused Prompts**: Specialized system prompts for emergency medicine
 - **Context-Aware Responses**: Incorporates retrieved documents for accurate answers
 
@@ -47,12 +49,14 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
+> **⚠️ Important**: **Python 3.10.x is required** for spaCy SciBERT medical models to install correctly. The setup script will detect and use Python 3.10 automatically.
+
 ### 2. Activate Environment
 ```bash
-# Using provided activation script
+# Using Python 3.10 activation script (recommended)
 source activate_py310.sh
 
-# Or directly
+# Or activate directly
 source venv_py310/bin/activate
 ```
 
@@ -72,7 +76,16 @@ python cli.py ingest documents/
 python cli.py ingest documents/ --reset
 ```
 
-### 5. Start the System
+### 5. Install Medical Models (Automatic)
+The setup script automatically installs spaCy SciBERT for medical entity extraction:
+```bash
+# This is done automatically by setup.sh, but can be run manually:
+pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_scibert-0.5.4.tar.gz
+```
+
+> **🚀 GPU Acceleration**: For optimal performance with spaCy SciBERT, configure GPU support following the [spaCy GPU setup guide](https://spacy.io/usage#gpu).
+
+### 6. Start the System
 
 #### Development Mode
 ```bash
@@ -268,10 +281,12 @@ Get system status
 ## Requirements
 
 ### System Requirements
-- Python 3.8+
-- 4GB+ RAM (8GB+ recommended)
-- 10GB+ free disk space
-- Linux, macOS, or Windows
+- **Python 3.10.x** (Required for spaCy SciBERT medical models)
+- **GPU**: CUDA-compatible GPU recommended for spaCy SciBERT (see [spaCy GPU setup](https://spacy.io/usage#gpu))
+- **Memory**: 4GB+ RAM (8GB+ recommended for large document collections)
+- **Storage**: 10GB+ free disk space
+- **OS**: Linux, macOS, or Windows
+- **Additional**: tesseract-ocr, poppler-utils (for PDF processing)
 
 ### LM Studio Setup
 1. Install LM Studio
@@ -348,7 +363,19 @@ Adjust search parameters in the web interface or via API:
    python -m spacy download en_core_web_sm
    ```
 
-3. **Memory Issues**
+3. **spaCy SciBERT Installation Issues**
+   ```bash
+   # Manual installation if setup.sh fails
+   pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_scibert-0.5.4.tar.gz
+   
+   # Verify installation
+   python -c "import spacy; nlp = spacy.load('en_core_sci_scibert'); print('SciBERT loaded successfully')"
+   ```
+   - Requires Python 3.10.x
+   - GPU recommended for optimal performance ([spaCy GPU guide](https://spacy.io/usage#gpu))
+   - Large model (~1.2GB download)
+
+4. **Memory Issues**
    - Reduce `chunk_size` and `max_results`
    - Process documents in smaller batches
    - Use lighter embedding models

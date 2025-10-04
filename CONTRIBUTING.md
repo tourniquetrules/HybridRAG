@@ -25,7 +25,7 @@ Thank you for your interest in contributing to HybridRAG! This document provides
 
 #### Prerequisites
 
-- Python 3.8+
+- **Python 3.10.x** (Required for spaCy SciBERT medical models)
 - Git knowledge
 - Understanding of RAG systems and/or medical informatics
 - Familiarity with FastAPI, ChromaDB, and spaCy
@@ -44,6 +44,8 @@ Thank you for your interest in contributing to HybridRAG! This document provides
    ./setup.sh
    source activate_py310.sh
    ```
+   
+   **Note**: This automatically installs spaCy SciBERT medical models. For GPU acceleration, see the [spaCy GPU setup guide](https://spacy.io/usage#gpu).
 
 3. **Create a feature branch**
    ```bash

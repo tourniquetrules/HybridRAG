@@ -26,11 +26,11 @@ neo4j>=5.0.0                      # Optional graph database
 py2neo>=2021.2.0                  # Neo4j Python driver
 
 # =============================================================================
-# Medical NLP Models (install separately)
+# Medical NLP Models
 # =============================================================================
-# Run after pip install:
-# python -m spacy download en_core_web_sm
-# python -m spacy download en_core_sci_scibert
+scispacy>=0.5.4                   # Scientific spaCy models
+# Note: en_core_sci_scibert installed via direct URL in setup.sh
+# python -m spacy download en_core_web_sm (installed via setup.sh)
 
 # =============================================================================
 # Machine Learning & Processing

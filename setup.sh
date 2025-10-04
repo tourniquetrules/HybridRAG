@@ -4,36 +4,49 @@
 
 echo "🏥 Setting up Emergency Medicine Hybrid RAG System..."
 
-# Check if Python 3.8+ is available
+# Check if Python 3.10.x is available (required for spaCy SciBERT)
 python_cmd=""
-if command -v python3.8 &> /dev/null; then
-    python_cmd="python3.8"
-elif command -v python3.9 &> /dev/null; then
-    python_cmd="python3.9"
-elif command -v python3.10 &> /dev/null; then
+if command -v python3.10 &> /dev/null; then
     python_cmd="python3.10"
-elif command -v python3.11 &> /dev/null; then
-    python_cmd="python3.11"
 elif command -v python3 &> /dev/null; then
-    python_cmd="python3"
+    # Check if python3 is actually 3.10
+    python_version=$(python3 --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -n1)
+    if [[ "$python_version" == "3.10" ]]; then
+        python_cmd="python3"
+    else
+        echo "❌ Python 3.10.x is required for spaCy SciBERT medical models"
+        echo "   Found Python $python_version, but need 3.10.x"
+        echo "   Please install Python 3.10.x and try again"
+        exit 1
+    fi
 elif command -v python &> /dev/null; then
-    python_cmd="python"
+    # Check if python is actually 3.10
+    python_version=$(python --version 2>&1 | grep -oE '[0-9]+\.[0-9]+' | head -n1)
+    if [[ "$python_version" == "3.10" ]]; then
+        python_cmd="python"
+    else
+        echo "❌ Python 3.10.x is required for spaCy SciBERT medical models"
+        echo "   Found Python $python_version, but need 3.10.x"
+        echo "   Please install Python 3.10.x and try again"
+        exit 1
+    fi
 else
-    echo "❌ Python 3.8+ is required but not found"
+    echo "❌ Python 3.10.x is required but not found"
+    echo "   Please install Python 3.10.x and try again"
     exit 1
 fi
 
 echo "✅ Using Python: $python_cmd"
 
-# Create virtual environment
-echo "📦 Creating virtual environment..."
-$python_cmd -m venv venv
+# Create virtual environment with Python 3.10
+echo "📦 Creating Python 3.10 virtual environment..."
+$python_cmd -m venv venv_py310
 
 # Activate virtual environment
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-    source venv/Scripts/activate
+    source venv_py310/Scripts/activate
 else
-    source venv/bin/activate
+    source venv_py310/bin/activate
 fi
 
 # Upgrade pip
@@ -44,9 +57,13 @@ pip install --upgrade pip
 echo "📚 Installing Python requirements..."
 pip install -r requirements.txt
 
-# Download spaCy model
-echo "🧠 Downloading spaCy language model..."
+# Download spaCy models
+echo "🧠 Downloading spaCy language models..."
 python -m spacy download en_core_web_sm
+
+# Install spaCy SciBERT for medical entity extraction
+echo "🏥 Installing spaCy SciBERT medical model..."
+pip install https://s3-us-west-2.amazonaws.com/ai2-s2-scispacy/releases/v0.5.4/en_core_sci_scibert-0.5.4.tar.gz
 
 # Create directories
 echo "📁 Creating directories..."
