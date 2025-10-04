@@ -288,6 +288,25 @@ Get system status
 - **OS**: Linux, macOS, or Windows
 - **Additional**: tesseract-ocr, poppler-utils (for PDF processing)
 
+### Dependencies Included
+The system includes comprehensive support for multiple file formats through `docling[all]`:
+
+**Document Formats:**
+- **PDF**: Advanced processing with OCR and table extraction
+- **Word**: `.docx` files with formatting preservation
+- **PowerPoint**: `.pptx` presentations
+- **Excel**: `.xlsx` files with data extraction
+- **HTML/XML**: Web content and structured documents
+- **Markdown**: `.md` files
+- **CSV**: Data files with pandas integration
+
+**AI/ML Components:**
+- **Vector Search**: ChromaDB with sentence transformers
+- **Medical NLP**: spaCy SciBERT for clinical entity extraction
+- **Knowledge Graphs**: NetworkX with medical ontologies
+- **Reranking**: CrossEncoder models for relevance optimization
+- **Embeddings**: S-PubMedBert for medical literature
+
 ### LM Studio Setup
 1. Install LM Studio
 2. Load your preferred medical/general LLM
