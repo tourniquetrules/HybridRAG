@@ -1,0 +1,56 @@
+# Emergency Medicine Hybrid RAG System - Python 3.10 Optimized
+# Enhanced for larger models and scientific computing
+
+# Core RAG Dependencies
+docling>=2.55.0
+chromadb>=0.5.20
+sentence-transformers>=3.3.0
+transformers>=4.46.0
+
+# Enhanced ML & Scientific Computing
+torch>=2.4.0
+torchvision>=0.19.0
+torchaudio>=2.4.0
+accelerate>=0.34.0
+bitsandbytes>=0.44.0  # For quantization and memory optimization
+
+# Knowledge Graph Dependencies
+networkx>=3.4
+spacy>=3.8.0
+neo4j>=5.27.0
+py2neo>=2021.2.4
+
+# Scientific Python Stack
+numpy>=2.0.0
+pandas>=2.3.0
+scikit-learn>=1.7.0
+scipy>=1.16.0
+
+# Enhanced NLP
+datasets>=3.0.0
+tokenizers>=0.22.0
+huggingface-hub>=0.26.0
+
+# Medical/Scientific Models
+# scispacy  # Uncomment if needed for medical NLP
+
+# Web Interface
+flask>=3.1.0
+flask-cors>=6.0.0
+requests>=2.32.0
+
+# Document Processing
+PyPDF2>=3.0.0
+pdf2image>=1.17.0
+pytesseract>=0.3.13
+python-docx>=1.2.0
+
+# Utilities
+python-dotenv>=1.1.0
+tqdm>=4.67.0
+pydantic>=2.11.0
+pydantic-settings>=2.6.0
+
+# Development & Monitoring
+psutil>=7.1.0  # System monitoring
+memory-profiler>=0.61.0  # Memory usage tracking

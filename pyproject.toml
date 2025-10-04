@@ -1,0 +1,182 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hybridrag"
+version = "1.0.0"
+authors = [
+    {name = "HybridRAG Development Team", email = "contact@hybridrag.com"},
+]
+description = "Emergency Medicine Hybrid RAG System for Enhanced Medical Information Retrieval"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.8"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Operating System :: OS Independent",
+    "Framework :: FastAPI",
+]
+keywords = [
+    "rag", "retrieval-augmented-generation", "emergency-medicine", 
+    "medical-ai", "knowledge-graph", "vector-search", "healthcare",
+    "clinical-decision-support", "medical-nlp", "fastapi", "chromadb"
+]
+dependencies = [
+    "docling>=1.0.0",
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "transformers>=4.30.0",
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "jinja2>=3.1.0",
+    "python-multipart>=0.0.6",
+    "networkx>=3.0",
+    "spacy>=3.7.0",
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "scikit-learn>=1.3.0",
+    "PyPDF2>=3.0.0",
+    "pdf2image>=1.16.0",
+    "pytesseract>=0.3.10",
+    "requests>=2.31.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "click>=8.1.0",
+    "tqdm>=4.66.0",
+]
+
+[project.optional-dependencies]
+neo4j = ["neo4j>=5.0.0", "py2neo>=2021.2.0"]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+    "bandit>=1.7.5",
+    "safety>=2.3.0",
+]
+monitoring = [
+    "prometheus-client>=0.17.0",
+    "structlog>=23.1.0",
+    "loguru>=0.7.0",
+]
+security = [
+    "cryptography>=41.0.0",
+    "python-jose>=3.3.0",
+    "passlib>=1.7.4",
+]
+
+[project.scripts]
+hybridrag = "cli:main"
+hybridrag-server = "fastapi_app:main"
+
+[project.urls]
+Homepage = "https://github.com/tourniquetrules/HybridRAG"
+Documentation = "https://github.com/tourniquetrules/HybridRAG/blob/main/README.md"
+Repository = "https://github.com/tourniquetrules/HybridRAG"
+"Bug Tracker" = "https://github.com/tourniquetrules/HybridRAG/issues"
+Changelog = "https://github.com/tourniquetrules/HybridRAG/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = {"" = "."}
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+exclude = ["tests*", "docs*", "examples*", "__pycache__*", "*.pyc"]
+
+[tool.setuptools.package-data]
+"*" = ["*.md", "*.txt", "*.yml", "*.yaml", "*.json"]
+templates = ["*"]
+static = ["*"]
+
+# Black configuration
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+# isort configuration
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = true
+disallow_untyped_decorators = false
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
+
+# Pytest configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers --strict-config"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "medical: marks tests requiring medical validation",
+]
+
+# Coverage configuration  
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/tests/*",
+    "*/venv*/*",
+    "*/__pycache__/*",
+    "*/build/*",
+    "*/dist/*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]

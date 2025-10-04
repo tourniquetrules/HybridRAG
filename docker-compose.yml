@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  hybridrag:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./documents:/app/documents
+      - ./uploads:/app/uploads  
+      - ./vector_db:/app/vector_db
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    environment:
+      - FASTAPI_HOST=0.0.0.0
+      - FASTAPI_PORT=5000
+      - VECTOR_DB_PATH=/app/vector_db
+      - LOG_FILE=/app/logs/application.log
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Neo4j for enhanced knowledge graphs
+  neo4j:
+    image: neo4j:5-community
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    environment:
+      - NEO4J_AUTH=neo4j/hybridrag2024
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    restart: unless-stopped
+    profiles:
+      - neo4j
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+
+networks:
+  default:
+    name: hybridrag-network

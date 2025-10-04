@@ -1,0 +1,30 @@
+[Unit]
+Description=DoclingAgent Emergency Medicine RAG System
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=tourniquetrules
+Group=tourniquetrules
+WorkingDirectory=/home/tourniquetrules/doclingagent
+Environment=PATH=/home/tourniquetrules/doclingagent/venv_py310/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/home/tourniquetrules/doclingagent/venv_py310/bin/python /home/tourniquetrules/doclingagent/fastapi_app.py
+Restart=always
+RestartSec=10
+StandardOutput=append:/home/tourniquetrules/doclingagent/service.log
+StandardError=append:/home/tourniquetrules/doclingagent/service.log
+
+# Resource limits
+MemoryMax=4G
+CPUQuota=200%
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/home/tourniquetrules/doclingagent
+ProtectHome=no
+
+[Install]
+WantedBy=multi-user.target
