@@ -8,7 +8,7 @@ load_dotenv()
 @dataclass
 class Config:
     # LM Studio Configuration
-    lm_studio_host: str = os.getenv("LM_STUDIO_HOST", "http://192.168.2.64:1234")
+    lm_studio_host: str = os.getenv("LM_STUDIO_HOST", "http://192.168.2.180:1234")
     lm_studio_model: str = os.getenv("LM_STUDIO_MODEL", "local-model")
     
     # Vector Database Configuration

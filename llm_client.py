@@ -21,8 +21,9 @@ class LMStudioClient:
             'Accept': 'application/json'
         })
         
-        # Test connection
+        # Test connection and auto-detect model if needed
         self._test_connection()
+        self._auto_detect_model()
     
     def _test_connection(self) -> bool:
         """Test connection to LM Studio"""
@@ -38,6 +39,65 @@ class LMStudioClient:
         except Exception as e:
             logger.warning(f"Cannot connect to LM Studio: {str(e)}")
             return False
+    
+    def _auto_detect_model(self) -> None:
+        """Auto-detect available model if default doesn't work"""
+        try:
+            # First, try to get available models
+            response = self.session.get(f"{self.base_url}/v1/models", timeout=10)
+            if response.status_code == 200:
+                models = response.json()
+                available_models = [model['id'] for model in models.get('data', [])]
+                
+                if available_models:
+                    # Use the first available model if current model is generic
+                    if self.model in ["local-model", ""] or self.model not in available_models:
+                        self.model = available_models[0]
+                        logger.info(f"Auto-detected model: {self.model}")
+                    else:
+                        logger.info(f"Using configured model: {self.model}")
+                else:
+                    logger.warning("No models available in LM Studio")
+            else:
+                logger.warning("Could not retrieve model list from LM Studio")
+        except Exception as e:
+            logger.warning(f"Model auto-detection failed: {e}")
+    
+    def get_available_models(self) -> List[Dict[str, Any]]:
+        """Get list of available models from LM Studio"""
+        try:
+            response = self.session.get(f"{self.base_url}/v1/models", timeout=10)
+            if response.status_code == 200:
+                models = response.json()
+                return models.get('data', [])
+            else:
+                logger.warning(f"Could not retrieve model list: {response.status_code}")
+                return []
+        except Exception as e:
+            logger.error(f"Error getting available models: {e}")
+            return []
+    
+    def switch_model(self, model_name: str) -> bool:
+        """Switch to a different model"""
+        try:
+            # Verify the model exists in available models
+            available_models = self.get_available_models()
+            available_model_ids = [model['id'] for model in available_models]
+            
+            if model_name in available_model_ids:
+                self.model = model_name
+                logger.info(f"Switched to model: {self.model}")
+                return True
+            else:
+                logger.warning(f"Model {model_name} not available. Available models: {available_model_ids}")
+                return False
+        except Exception as e:
+            logger.error(f"Error switching model: {e}")
+            return False
+    
+    def get_current_model(self) -> str:
+        """Get currently selected model"""
+        return self.model
     
     def generate_response(
         self, 

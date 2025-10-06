@@ -11,7 +11,7 @@ Your Emergency Medicine Hybrid RAG System is now fully functional and ready for 
 - **Vector Database**: ChromaDB with persistent storage
 - **Knowledge Graph**: Medical entity extraction with NetworkX
 - **Reranker**: Cross-encoder for improved search results
-- **LLM Integration**: LM Studio at http://192.168.2.64:1234 (32 models available)
+- **LLM Integration**: LM Studio at http://192.168.2.180:1234 (32 models available)
 - **Web Interface**: Flask app running at http://127.0.0.1:5000
 
 ## Getting Started
@@ -90,7 +90,7 @@ Vector Database   Knowledge Graph
 ## Configuration
 
 Key configuration is in `config.py`:
-- **LM Studio**: http://192.168.2.64:1234
+- **LM Studio**: http://192.168.2.180:1234
 - **Vector DB**: ChromaDB with persistent storage
 - **Collection**: emergency_medicine
 - **Embedding Model**: all-MiniLM-L6-v2
@@ -117,7 +117,7 @@ All 6 core tests passed:
 ## Troubleshooting
 
 If you encounter issues:
-1. Check that LM Studio is running at http://192.168.2.64:1234
+1. Check that LM Studio is running at http://192.168.2.180:1234
 2. Ensure all dependencies are installed: `pip install -r requirements.txt`
 3. Run system tests: `python test_system.py`
 4. Check logs in the `logs/` directory

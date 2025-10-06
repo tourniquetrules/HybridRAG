@@ -144,6 +144,62 @@ def search():
         logger.error(f"Error in search endpoint: {str(e)}")
         return jsonify({'error': f'Internal server error: {str(e)}'}), 500
 
+@app.route('/api/models', methods=['GET'])
+def get_models():
+    """Get available models from LM Studio"""
+    try:
+        rag = get_rag_system()
+        if not rag:
+            return jsonify({'error': 'RAG system not available'}), 500
+        
+        models = rag.llm_client.get_available_models()
+        current_model = rag.llm_client.get_current_model()
+        
+        return jsonify({
+            'available_models': models,
+            'current_model': current_model,
+            'status': 'success',
+            'timestamp': datetime.now().isoformat()
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting models: {str(e)}")
+        return jsonify({'error': f'Could not retrieve models: {str(e)}'}), 500
+
+@app.route('/api/models/switch', methods=['POST'])
+def switch_model():
+    """Switch to a different model"""
+    try:
+        data = request.get_json()
+        model_name = data.get('model_name', '').strip()
+        
+        if not model_name:
+            return jsonify({'error': 'Model name is required'}), 400
+        
+        rag = get_rag_system()
+        if not rag:
+            return jsonify({'error': 'RAG system not available'}), 500
+        
+        success = rag.llm_client.switch_model(model_name)
+        
+        if success:
+            return jsonify({
+                'status': 'success',
+                'message': f'Switched to model: {model_name}',
+                'current_model': rag.llm_client.get_current_model(),
+                'timestamp': datetime.now().isoformat()
+            })
+        else:
+            return jsonify({
+                'status': 'error',
+                'message': f'Failed to switch to model: {model_name}',
+                'timestamp': datetime.now().isoformat()
+            }), 400
+        
+    except Exception as e:
+        logger.error(f"Error switching model: {str(e)}")
+        return jsonify({'error': f'Internal server error: {str(e)}'}), 500
+
 @app.route('/api/ingest', methods=['POST'])
 def ingest_documents():
     """Document ingestion endpoint"""

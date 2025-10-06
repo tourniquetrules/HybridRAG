@@ -1,0 +1,8 @@
+GPU,Model,Specialization,1_User_LLM_ms,3_Users_LLM_ms,5_Users_LLM_ms,Max_QPS,Champion_Category
+RTX 4090,MedGemma-4B,Medical,1993,4235,6533,1.2,Medical Champion
+RTX 4090,MedGemma-4B,Medical,1952,6517,12285,1.3,
+RTX 4090,MedGemma-27B,Medical,23557,51900,53366,0.2,
+RTX 4090,LFM-1.2B,General,1671,3507,5311,1.3,
+RTX 3080,Gemma3-4B Edge,Edge Optimized,3579,10680,17927,0.8,
+RTX 3080,MedGemma-4B,Medical,2067,5440,8963,0.9,
+RTX 3080,LFM-1.2B,General,1181,3211,5050,1.7,Speed Champion

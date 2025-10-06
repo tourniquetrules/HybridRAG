@@ -1,0 +1,97 @@
+{
+  "timestamp": "2025-10-04T13:14:35.035193",
+  "gpu_results": {
+    "RTX 3080": [
+      {
+        "scenario": "rtx_3080_1_users",
+        "summary": "BenchmarkSummary(total_queries=3, successful_queries=3, failed_queries=0, concurrent_users=1, total_duration=4.185406923294067, avg_embedding_time=0.08128476142883301, avg_search_time=0.016841650009155273, avg_llm_inference_time=2.5548699696858725, avg_total_time=2.652998447418213, min_time=1.8116114139556885, max_time=4.185406923294067, p50_time=1.9619770050048828, p95_time=np.float64(3.9630639314651486), p99_time=np.float64(4.140938324928284), queries_per_second=0.7167761832913706, cpu_usage=3.99375, memory_usage=17.10625, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=0, query=np.str_('What are the signs of sepsis?'), embedding_time=0.22866535186767578, search_time=0.04618477821350098, llm_inference_time=3.9105536937713623, total_time=4.185406923294067, num_results=5, response_length=2212, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('How do you manage acute MI?'), embedding_time=0.007631063461303711, search_time=0.0021512508392333984, llm_inference_time=1.8018269538879395, total_time=1.8116114139556885, num_results=5, response_length=1246, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('When should you intubate a patient?'), embedding_time=0.007557868957519531, search_time=0.0021889209747314453, llm_inference_time=1.9522292613983154, total_time=1.9619770050048828, num_results=5, response_length=1311, success=True, error='')"
+        ]
+      },
+      {
+        "scenario": "rtx_3080_3_users",
+        "summary": "BenchmarkSummary(total_queries=6, successful_queries=6, failed_queries=0, concurrent_users=3, total_duration=8.346555233001709, avg_embedding_time=0.02485676606496175, avg_search_time=0.002339522043863932, avg_llm_inference_time=5.9296687841415405, avg_total_time=5.95686662197113, min_time=2.6242589950561523, max_time=8.346555233001709, p50_time=6.693010926246643, p95_time=np.float64(8.08497530221939), p99_time=np.float64(8.294239246845246), queries_per_second=0.7188594375169782, cpu_usage=4.2700000000000005, memory_usage=16.9, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=0, query=np.str_('How do you manage acute MI?'), embedding_time=0.03172564506530762, search_time=0.0026247501373291016, llm_inference_time=2.589906930923462, total_time=2.6242589950561523, num_results=5, response_length=1730, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.03342866897583008, search_time=0.0023245811462402344, llm_inference_time=4.048373699188232, total_time=4.084128141403198, num_results=5, response_length=1037, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.038159847259521484, search_time=0.0022814273834228516, llm_inference_time=6.573951721191406, total_time=6.614394426345825, num_results=5, response_length=1508, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What is the best treatment for anaphylaxis?'), embedding_time=0.01437520980834961, search_time=0.0021851062774658203, llm_inference_time=6.755065441131592, total_time=6.771627426147461, num_results=5, response_length=1747, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('What are the signs of sepsis?'), embedding_time=0.014583587646484375, search_time=0.002268075942993164, llm_inference_time=7.283382177352905, total_time=7.3002355098724365, num_results=5, response_length=1073, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('What are the signs of sepsis?'), embedding_time=0.016867637634277344, search_time=0.002353191375732422, llm_inference_time=8.327332735061646, total_time=8.346555233001709, num_results=5, response_length=2202, success=True, error='')"
+        ]
+      },
+      {
+        "scenario": "rtx_3080_5_users",
+        "summary": "BenchmarkSummary(total_queries=10, successful_queries=10, failed_queries=0, concurrent_users=5, total_duration=12.205046892166138, avg_embedding_time=0.03862638473510742, avg_search_time=0.0022837162017822266, avg_llm_inference_time=8.94089343547821, avg_total_time=8.98180525302887, min_time=1.7914514541625977, max_time=12.205046892166138, p50_time=11.020989060401917, p95_time=np.float64(12.104093587398529), p99_time=np.float64(12.184856231212615), queries_per_second=0.8193331896511223, cpu_usage=4.262222222222222, memory_usage=16.9, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=0, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.05999135971069336, search_time=0.0020453929901123047, llm_inference_time=1.7294130325317383, total_time=1.7914514541625977, num_results=5, response_length=1140, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('What are the signs of sepsis?'), embedding_time=0.06455731391906738, search_time=0.0025136470794677734, llm_inference_time=3.763132095336914, total_time=3.830204486846924, num_results=5, response_length=1304, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.06580948829650879, search_time=0.002680063247680664, llm_inference_time=5.988825798034668, total_time=6.057317733764648, num_results=5, response_length=1592, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('How do you manage acute MI?'), embedding_time=0.06952452659606934, search_time=0.0018870830535888672, llm_inference_time=8.114054918289185, total_time=8.185467720031738, num_results=5, response_length=1518, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('How do you manage acute MI?'), embedding_time=0.06435179710388184, search_time=0.003382444381713867, llm_inference_time=11.871449708938599, total_time=11.939185857772827, num_results=5, response_length=2330, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.010817289352416992, search_time=0.0021457672119140625, llm_inference_time=12.192082405090332, total_time=12.205046892166138, num_results=5, response_length=1367, success=True, error='')",
+          "BenchmarkResult(user_id=3, query=np.str_('How do you manage acute MI?'), embedding_time=0.017254114151000977, search_time=0.0021009445190429688, llm_inference_time=11.96134901046753, total_time=11.980706214904785, num_results=5, response_length=1226, success=True, error='')",
+          "BenchmarkResult(user_id=3, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.007606983184814453, search_time=0.001890420913696289, llm_inference_time=11.483813524246216, total_time=11.49331259727478, num_results=5, response_length=1201, success=True, error='')",
+          "BenchmarkResult(user_id=4, query=np.str_('What are the signs of sepsis?'), embedding_time=0.013556480407714844, search_time=0.0021600723266601562, llm_inference_time=11.770976305007935, total_time=11.786694049835205, num_results=5, response_length=1432, success=True, error='')",
+          "BenchmarkResult(user_id=4, query=np.str_('When should you intubate a patient?'), embedding_time=0.01279449462890625, search_time=0.0020313262939453125, llm_inference_time=10.53383755683899, total_time=10.548665523529053, num_results=5, response_length=1602, success=True, error='')"
+        ]
+      }
+    ],
+    "RTX 4090": [
+      {
+        "scenario": "rtx_4090_1_users",
+        "summary": "BenchmarkSummary(total_queries=3, successful_queries=3, failed_queries=0, concurrent_users=1, total_duration=3.2582669258117676, avg_embedding_time=0.00999744733174642, avg_search_time=0.001977046330769857, avg_llm_inference_time=2.206683079401652, avg_total_time=2.218658924102783, min_time=1.6277620792388916, max_time=3.2582669258117676, p50_time=1.7699477672576904, p95_time=np.float64(3.1094350099563597), p99_time=np.float64(3.228500542640686), queries_per_second=0.9207348778684169, cpu_usage=0.4, memory_usage=16.957142857142856, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=0, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.00932455062866211, search_time=0.0015709400177001953, llm_inference_time=3.2473702430725098, total_time=3.2582669258117676, num_results=5, response_length=205, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('When should you intubate a patient?'), embedding_time=0.00693964958190918, search_time=0.0022280216217041016, llm_inference_time=1.6185929775238037, total_time=1.6277620792388916, num_results=5, response_length=417, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.013728141784667969, search_time=0.0021321773529052734, llm_inference_time=1.7540860176086426, total_time=1.7699477672576904, num_results=5, response_length=887, success=True, error='')"
+        ]
+      },
+      {
+        "scenario": "rtx_4090_3_users",
+        "summary": "BenchmarkSummary(total_queries=6, successful_queries=6, failed_queries=0, concurrent_users=3, total_duration=6.214033365249634, avg_embedding_time=0.018027583758036297, avg_search_time=0.00168303648630778, avg_llm_inference_time=4.453830361366272, avg_total_time=4.4735426505406695, min_time=1.9218733310699463, max_time=6.214033365249634, p50_time=4.936435699462891, p95_time=np.float64(6.078561186790466), p99_time=np.float64(6.1869389295578), queries_per_second=0.9655564505902785, cpu_usage=0.3521739130434783, memory_usage=16.9, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=0, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.02673816680908203, search_time=0.0015616416931152344, llm_inference_time=1.8935718536376953, total_time=1.9218733310699463, num_results=5, response_length=394, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What are the signs of sepsis?'), embedding_time=0.023193836212158203, search_time=0.0014362335205078125, llm_inference_time=3.1357011795043945, total_time=3.1603331565856934, num_results=5, response_length=380, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('What are the signs of sepsis?'), embedding_time=0.026558399200439453, search_time=0.0010294914245605469, llm_inference_time=4.842813491821289, total_time=4.870402812957764, num_results=5, response_length=458, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.008686304092407227, search_time=0.0019512176513671875, llm_inference_time=4.9918296337127686, total_time=5.002468585968018, num_results=5, response_length=245, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('What are the signs of sepsis?'), embedding_time=0.012315988540649414, search_time=0.0020885467529296875, llm_inference_time=5.657737970352173, total_time=5.672144651412964, num_results=5, response_length=310, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('What is the Glasgow Coma Scale?'), embedding_time=0.010672807693481445, search_time=0.002031087875366211, llm_inference_time=6.2013280391693115, total_time=6.214033365249634, num_results=5, response_length=219, success=True, error='')"
+        ]
+      },
+      {
+        "scenario": "rtx_4090_5_users",
+        "summary": "BenchmarkSummary(total_queries=10, successful_queries=10, failed_queries=0, concurrent_users=5, total_duration=16.284171104431152, avg_embedding_time=0.03239972591400146, avg_search_time=0.002338099479675293, avg_llm_inference_time=12.170824146270752, avg_total_time=12.205563282966613, min_time=5.399866104125977, max_time=16.284171104431152, p50_time=13.153281092643738, p95_time=np.float64(15.623586153984068), p99_time=np.float64(16.152054114341738), queries_per_second=0.6140932771996518, cpu_usage=0.37758620689655176, memory_usage=16.9, errors=[])",
+        "results": [
+          "BenchmarkResult(user_id=2, query=np.str_('How do you manage acute MI?'), embedding_time=0.047003746032714844, search_time=0.0016274452209472656, llm_inference_time=5.351233959197998, total_time=5.399866104125977, num_results=5, response_length=389, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What are the signs of sepsis?'), embedding_time=0.04824638366699219, search_time=0.0018744468688964844, llm_inference_time=8.012644529342651, total_time=8.062766790390015, num_results=5, response_length=412, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('What are the signs of sepsis?'), embedding_time=0.05610966682434082, search_time=0.0024585723876953125, llm_inference_time=10.687314748764038, total_time=10.745884895324707, num_results=5, response_length=422, success=True, error='')",
+          "BenchmarkResult(user_id=0, query=np.str_('When should you intubate a patient?'), embedding_time=0.055603981018066406, search_time=0.002672910690307617, llm_inference_time=13.387894630432129, total_time=13.446172952651978, num_results=5, response_length=351, success=True, error='')",
+          "BenchmarkResult(user_id=1, query=np.str_('What is the best treatment for anaphylaxis?'), embedding_time=0.05353069305419922, search_time=0.0027375221252441406, llm_inference_time=16.227901697158813, total_time=16.284171104431152, num_results=5, response_length=426, success=True, error='')",
+          "BenchmarkResult(user_id=2, query=np.str_('When should you intubate a patient?'), embedding_time=0.012602567672729492, search_time=0.002711057662963867, llm_inference_time=13.510805368423462, total_time=13.52612018585205, num_results=5, response_length=111, success=True, error='')",
+          "BenchmarkResult(user_id=3, query=np.str_('What is the best treatment for anaphylaxis?'), embedding_time=0.01238560676574707, search_time=0.002349853515625, llm_inference_time=14.175288200378418, total_time=14.190024852752686, num_results=5, response_length=1543, success=True, error='')",
+          "BenchmarkResult(user_id=3, query=np.str_('What are the signs of sepsis?'), embedding_time=0.013191699981689453, search_time=0.0023331642150878906, llm_inference_time=14.800678253173828, total_time=14.81620454788208, num_results=5, response_length=295, success=True, error='')",
+          "BenchmarkResult(user_id=4, query=np.str_('What are the signs of sepsis?'), embedding_time=0.012801170349121094, search_time=0.002282381057739258, llm_inference_time=12.845304727554321, total_time=12.860389232635498, num_results=5, response_length=450, success=True, error='')",
+          "BenchmarkResult(user_id=4, query=np.str_('When should you intubate a patient?'), embedding_time=0.012521743774414062, search_time=0.0023336410522460938, llm_inference_time=12.70917534828186, total_time=12.724032163619995, num_results=5, response_length=449, success=True, error='')"
+        ]
+      }
+    ]
+  },
+  "system_info": {
+    "tested_gpus": [
+      [
+        "http://192.168.2.180:1234",
+        "RTX 3080"
+      ],
+      [
+        "http://192.168.2.64:1234",
+        "RTX 4090"
+      ]
+    ],
+    "vector_db": "./vector_db",
+    "collection": "emergency_medicine"
+  }
+}

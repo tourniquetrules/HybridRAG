@@ -81,7 +81,7 @@ Settings:
 ├── Vector DB path: ./vector_db
 ├── Collection name: emergency_medicine
 ├── Embedding model: all-MiniLM-L6-v2
-├── LM Studio: http://192.168.2.64:1234
+├── LM Studio: http://192.168.2.180:1234
 └── Web interface: 0.0.0.0:5000
 ```
 

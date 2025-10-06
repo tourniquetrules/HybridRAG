@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-10-04T13:11:52.769148",
+  "gpu_results": {
+    "RTX 3080": [],
+    "RTX 4090": []
+  },
+  "system_info": {
+    "tested_gpus": [
+      [
+        "http://192.168.2.180:1234",
+        "RTX 3080"
+      ],
+      [
+        "http://192.168.2.64:1234",
+        "RTX 4090"
+      ]
+    ],
+    "vector_db": "./vector_db",
+    "collection": "emergency_medicine"
+  }
+}

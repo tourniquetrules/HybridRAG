@@ -149,7 +149,7 @@ python cli.py ingest /path/to/pdfs/ --reset --neo4j
 ### Environment Variables (.env)
 ```bash
 # LM Studio Configuration
-LM_STUDIO_HOST=http://192.168.2.64:1234
+LM_STUDIO_HOST=http://192.168.2.180:1234
 LM_STUDIO_MODEL=local-model
 
 # Vector Database
@@ -232,7 +232,7 @@ Get system status
   },
   "llm": {
     "status": "online",
-    "endpoint": "http://192.168.2.64:1234"
+    "endpoint": "http://192.168.2.180:1234"
   }
 }
 ```
@@ -310,7 +310,7 @@ The system includes comprehensive support for multiple file formats through `doc
 ### LM Studio Setup
 1. Install LM Studio
 2. Load your preferred medical/general LLM
-3. Start the server on `http://192.168.2.64:1234`
+3. Start the server on `http://192.168.2.180:1234`
 4. Ensure the model is loaded and ready
 
 ### Optional: Neo4j Setup

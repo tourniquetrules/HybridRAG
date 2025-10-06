@@ -242,6 +242,61 @@
             margin-left: 10px;
         }
 
+        .setting-item select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            background: white;
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .gpu-status {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .status-indicator {
+            margin-right: 5px;
+            font-size: 14px;
+        }
+
+        .status-indicator.connected {
+            color: #28a745;
+        }
+
+        .status-indicator.disconnected {
+            color: #dc3545;
+        }
+
+        .status-indicator.checking {
+            color: #ffc107;
+        }
+
+        .model-status {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        .model-status .status-indicator.ready {
+            color: #28a745;
+        }
+
+        .model-status .status-indicator.loading {
+            color: #ffc107;
+        }
+
+        .model-status .status-indicator.error {
+            color: #dc3545;
+        }
+
         .status {
             background: white;
             border-radius: 8px;
@@ -261,6 +316,31 @@
             justify-content: space-between;
             margin-bottom: 5px;
             font-size: 12px;
+        }
+
+        .message-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 16px;
+            border-radius: 4px;
+            color: white;
+            font-weight: 500;
+            z-index: 1000;
+            max-width: 300px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .message-toast.success {
+            background-color: #28a745;
+        }
+
+        .message-toast.error {
+            background-color: #dc3545;
+        }
+
+        .message-toast.info {
+            background-color: #007bff;
         }
 
         .status-online {
@@ -476,6 +556,22 @@
     <div class="container">
         <div class="sidebar">
             <div class="settings">
+                <h3>GPU Selection</h3>
+                <div class="setting-item">
+                    <label>
+                        <select id="gpu-selection" onchange="switchGPU()">
+                            <option value="192.168.2.180:1234" selected>RTX 3080 10GB (192.168.2.180)</option>
+                            <option value="192.168.2.64:1234">RTX 4090 24GB (192.168.2.64)</option>
+                        </select>
+                    </label>
+                    <div id="gpu-status" class="gpu-status">
+                        <span class="status-indicator" id="gpu-indicator">●</span>
+                        <span id="gpu-status-text">Checking connection...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="settings">
                 <h3>Search Settings</h3>
                 <div class="setting-item">
                     <label>
@@ -500,6 +596,25 @@
                         Max Results:
                         <input type="number" id="max-results" value="10" min="1" max="50">
                     </label>
+                </div>
+            </div>
+            
+            <div class="settings">
+                <h3>Model Selection</h3>
+                <div class="setting-item">
+                    <label>
+                        Current Model:
+                        <select id="model-selection" onchange="switchModel()">
+                            <option value="">Loading models...</option>
+                        </select>
+                    </label>
+                    <div id="model-status" class="model-status">
+                        <span class="status-indicator" id="model-indicator">●</span>
+                        <span id="model-status-text">Loading...</span>
+                    </div>
+                </div>
+                <div class="setting-item">
+                    <button class="btn btn-secondary" onclick="refreshModels()">Refresh Models</button>
                 </div>
             </div>
 
@@ -578,6 +693,7 @@
                     <div class="input-group">
                         <input type="text" id="query-input" placeholder="Ask about emergency medicine..." onkeypress="handleKeyPress(event)">
                         <button class="btn btn-primary" onclick="sendMessage()" id="send-btn">Send</button>
+                        <button class="btn btn-secondary" onclick="generateShareableLink()" id="share-btn" title="Generate shareable link for this question">🔗 Share</button>
                     </div>
                 </div>
             </div>
@@ -585,12 +701,63 @@
     </div>
 
     <script>
+        // Session and conversation management
+        let sessionId = null;
+        let conversationHistory = [];
+        
+        // Initialize session
+        function initializeSession() {
+            // Generate a new session ID if not exists
+            if (!sessionId) {
+                sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            }
+        }
+        
         // Initialize
         $(document).ready(function() {
+            initializeSession();
             loadSystemStatus();
+            checkGPUStatus();
+            loadAvailableModels();
+            
+            // Check for URL parameters and auto-submit question
+            handleURLParameters();
+            
             // Auto-refresh status every 30 seconds
             setInterval(loadSystemStatus, 30000);
+            // Check GPU status every 60 seconds
+            setInterval(checkGPUStatus, 60000);
+            // Refresh models every 5 minutes
+            setInterval(loadAvailableModels, 300000);
         });
+
+        function handleURLParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const question = urlParams.get('q') || urlParams.get('question');
+            
+            // Also check if the question is in the URL path after a ?
+            const urlParts = window.location.href.split('?');
+            if (urlParts.length > 1 && !question) {
+                const possibleQuestion = decodeURIComponent(urlParts[1]);
+                // If it's not a standard parameter format, treat it as a direct question
+                if (!possibleQuestion.includes('=')) {
+                    $('#query-input').val(possibleQuestion);
+                    // Auto-submit after a short delay to ensure page is fully loaded
+                    setTimeout(() => {
+                        sendMessage();
+                    }, 1000);
+                    return;
+                }
+            }
+            
+            if (question) {
+                $('#query-input').val(question);
+                // Auto-submit after a short delay to ensure page is fully loaded
+                setTimeout(() => {
+                    sendMessage();
+                }, 1000);
+            }
+        }
 
         function handleKeyPress(event) {
             if (event.key === 'Enter' && !event.shiftKey) {
@@ -617,7 +784,9 @@
                 use_vector: $('#use-vector').is(':checked'),
                 use_knowledge_graph: $('#use-kg').is(':checked'),
                 use_reranking: $('#use-reranking').is(':checked'),
-                max_results: parseInt($('#max-results').val()) || 10
+                max_results: parseInt($('#max-results').val()) || 10,
+                session_id: sessionId,
+                conversation_history: conversationHistory
             };
 
             // Send to API
@@ -627,6 +796,15 @@
                 contentType: 'application/json',
                 data: JSON.stringify(settings),
                 success: function(response) {
+                    // Update local conversation history
+                    conversationHistory.push({role: 'user', content: query});
+                    conversationHistory.push({role: 'assistant', content: response.response});
+                    
+                    // Keep only last 20 messages
+                    if (conversationHistory.length > 20) {
+                        conversationHistory = conversationHistory.slice(-20);
+                    }
+                    
                     addMessage('assistant', response.response, response.sources, response.search_methods_used);
                 },
                 error: function(xhr) {
@@ -788,15 +966,51 @@
         function clearHistory() {
             if (confirm('Are you sure you want to clear the conversation history?')) {
                 $.ajax({
-                    url: '/api/clear_history',
+                    url: '/api/chat/clear',
                     method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({session_id: sessionId}),
                     success: function() {
+                        // Clear local conversation history
+                        conversationHistory = [];
+                        
+                        // Clear UI messages
                         $('#messages').empty();
+                        
                         // Add welcome message back
                         addMessage('assistant', '👋 Conversation history cleared. How can I help you with emergency medicine?');
+                        
+                        showMessage('Conversation history cleared successfully!', 'success');
+                    },
+                    error: function() {
+                        showMessage('Failed to clear conversation history', 'error');
                     }
                 });
             }
+        }
+
+        function generateShareableLink() {
+            const currentQuestion = $('#query-input').val().trim();
+            if (!currentQuestion) {
+                alert('Please enter a question first to generate a shareable link.');
+                return;
+            }
+            
+            const baseUrl = window.location.origin + window.location.pathname;
+            const shareableUrl = baseUrl + '?' + encodeURIComponent(currentQuestion);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(shareableUrl).then(function() {
+                // Show temporary success message
+                const originalPlaceholder = $('#query-input').attr('placeholder');
+                $('#query-input').attr('placeholder', '✅ Shareable link copied to clipboard!');
+                setTimeout(() => {
+                    $('#query-input').attr('placeholder', originalPlaceholder);
+                }, 3000);
+            }).catch(function(err) {
+                // Fallback: show the URL in an alert
+                alert('Shareable link:\n' + shareableUrl);
+            });
         }
 
         function exportConversation() {
@@ -814,6 +1028,183 @@
                     URL.revokeObjectURL(url);
                 }
             });
+        }
+
+        // GPU Selection Functionality
+        function switchGPU() {
+            const selectedEndpoint = $('#gpu-selection').val();
+            const indicator = $('#gpu-indicator');
+            const statusText = $('#gpu-status-text');
+            
+            // Update status to checking
+            indicator.removeClass('connected disconnected').addClass('checking');
+            statusText.text('Switching GPU...');
+            
+            // Send request to backend to switch GPU
+            $.ajax({
+                url: '/api/switch_gpu',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    endpoint: 'http://' + selectedEndpoint
+                }),
+                success: function(response) {
+                    if (response.success) {
+                        indicator.removeClass('checking disconnected').addClass('connected');
+                        statusText.text('Connected');
+                        // Refresh system status
+                        loadSystemStatus();
+                    } else {
+                        indicator.removeClass('checking connected').addClass('disconnected');
+                        statusText.text('Connection failed');
+                    }
+                },
+                error: function() {
+                    indicator.removeClass('checking connected').addClass('disconnected');
+                    statusText.text('Switch failed');
+                }
+            });
+        }
+
+        function checkGPUStatus() {
+            const selectedEndpoint = $('#gpu-selection').val();
+            const indicator = $('#gpu-indicator');
+            const statusText = $('#gpu-status-text');
+            
+            indicator.removeClass('connected disconnected').addClass('checking');
+            statusText.text('Checking...');
+            
+            // Test connection to selected GPU
+            $.ajax({
+                url: '/api/test_gpu_connection',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    endpoint: 'http://' + selectedEndpoint
+                }),
+                success: function(response) {
+                    if (response.connected) {
+                        indicator.removeClass('checking disconnected').addClass('connected');
+                        statusText.text('Connected');
+                    } else {
+                        indicator.removeClass('checking connected').addClass('disconnected');
+                        statusText.text('Disconnected');
+                    }
+                },
+                error: function() {
+                    indicator.removeClass('checking connected').addClass('disconnected');
+                    statusText.text('Connection error');
+                }
+            });
+        }
+
+        // Model Selection Functionality
+        function loadAvailableModels() {
+            const modelSelect = $('#model-selection');
+            const indicator = $('#model-indicator');
+            const statusText = $('#model-status-text');
+            
+            indicator.removeClass('ready error').addClass('loading');
+            statusText.text('Loading models...');
+            
+            $.ajax({
+                url: '/api/models',
+                method: 'GET',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        // Clear existing options
+                        modelSelect.empty();
+                        
+                        // Add available models
+                        response.available_models.forEach(function(model) {
+                            const option = $('<option></option>');
+                            option.val(model.id);
+                            option.text(model.id);
+                            if (model.id === response.current_model) {
+                                option.attr('selected', 'selected');
+                            }
+                            modelSelect.append(option);
+                        });
+                        
+                        indicator.removeClass('loading error').addClass('ready');
+                        statusText.text(`Current: ${response.current_model}`);
+                    } else {
+                        indicator.removeClass('loading ready').addClass('error');
+                        statusText.text('Failed to load models');
+                    }
+                },
+                error: function() {
+                    indicator.removeClass('loading ready').addClass('error');
+                    statusText.text('Error loading models');
+                }
+            });
+        }
+
+        function switchModel() {
+            const selectedModel = $('#model-selection').val();
+            const indicator = $('#model-indicator');
+            const statusText = $('#model-status-text');
+            
+            if (!selectedModel) return;
+            
+            indicator.removeClass('ready error').addClass('loading');
+            statusText.text('Switching model...');
+            
+            $.ajax({
+                url: '/api/models/switch',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    model_name: selectedModel
+                }),
+                success: function(response) {
+                    if (response.status === 'success') {
+                        indicator.removeClass('loading error').addClass('ready');
+                        statusText.text(`Switched to: ${response.current_model}`);
+                        
+                        // Show success message
+                        showMessage(response.message, 'success');
+                    } else {
+                        indicator.removeClass('loading ready').addClass('error');
+                        statusText.text('Switch failed');
+                        showMessage(response.message, 'error');
+                    }
+                },
+                error: function(xhr) {
+                    indicator.removeClass('loading ready').addClass('error');
+                    statusText.text('Switch error');
+                    
+                    let errorMsg = 'Failed to switch model';
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg = xhr.responseJSON.error;
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            });
+        }
+
+        function refreshModels() {
+            loadAvailableModels();
+        }
+
+        // Message display functionality
+        function showMessage(message, type = 'info') {
+            // Remove any existing messages
+            $('.message-toast').remove();
+            
+            // Create new message element
+            const messageEl = $(`<div class="message-toast ${type}"></div>`);
+            messageEl.text(message);
+            
+            // Add to page
+            $('body').append(messageEl);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                messageEl.fadeOut(300, () => {
+                    messageEl.remove();
+                });
+            }, 3000);
         }
 
         // Drag and Drop Functionality

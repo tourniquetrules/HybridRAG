@@ -79,14 +79,14 @@ echo "🔌 Checking LM Studio connection..."
 python -c "
 import requests
 try:
-    response = requests.get('http://192.168.2.64:1234/v1/models', timeout=5)
+    response = requests.get('http://192.168.2.180:1234/v1/models', timeout=5)
     if response.status_code == 200:
         print('✅ LM Studio is accessible')
     else:
         print('⚠️ LM Studio responded with status:', response.status_code)
 except Exception as e:
     print('⚠️ Could not connect to LM Studio:', str(e))
-    print('   Make sure LM Studio is running at http://192.168.2.64:1234')
+    print('   Make sure LM Studio is running at http://192.168.2.180:1234')
 "
 
 # Check if Neo4j is available (optional)
